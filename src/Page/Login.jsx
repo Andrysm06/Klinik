@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BgKlinik from "../../public/Image/BgKlinik.png";
-import Logo from "../../public/Image/LgKlinik.png";
 
+import Logo from "../../public/Image/LgHBP2.png";
+import BgMobil from "../../public/Image/BgMobil2.jpeg";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -12,24 +12,40 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (username === "klinik" && password === "klinik") {
-      setMessage("Berhasil login");
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        navigate("/Beranda");
-      }, 3000);
-    } else {
-      setMessage("Username atau password salah");
-    }
-  };
 
+    setLoading(true);
+    setMessage("");
+
+    setTimeout(() => {
+      // ADMIN
+      if (username === "hbp" && password === "hbp") {
+        localStorage.setItem("login", "true");
+        localStorage.setItem("role", "admin");
+
+        setMessage("Login berhasil sebagai Admin");
+        navigate("/Beranda");
+      }
+
+      // USER
+      else if (username === "user" && password === "user") {
+        localStorage.setItem("login", "true");
+        localStorage.setItem("role", "user");
+
+        setMessage("Login berhasil sebagai User");
+        navigate("/Beranda");
+      } else {
+        setMessage("Username atau password salah");
+      }
+
+      setLoading(false);
+    }, 1200);
+  };
   return (
     <div className="w-full h-screen flex items-center justify-center relative">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${BgKlinik})`,
+          backgroundImage: `url(${BgMobil})`,
           filter: "blur(4px)",
         }}
       ></div>
@@ -83,7 +99,7 @@ const Login = () => {
             className={`w-full py-3 rounded-lg font-medium transition duration-300 ${
               loading
                 ? "bg-gray-400 text-gray-800 cursor-not-allowed"
-                : "bg-green-700 text-white hover:bg-green-800"
+                : "bg-red-700 text-white hover:bg-red-800"
             }`}
           >
             {loading ? "Loading..." : "Login"}
